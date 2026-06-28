@@ -809,15 +809,6 @@ export default function App() {
             {path === "arable" && arableResults ? (
               <div className="space-y-3">
                 <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-                  <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600">
-                    <Sprout size={20} className="text-white" strokeWidth={2.25} />
-                  </div>
-                  <p className="text-xs text-stone-500">მდგრადობა</p>
-                  <p className="text-2xl font-bold text-emerald-700">
-                    {arableResults.suitability.toFixed(1)}%
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
                   <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-600">
                     <Leaf size={20} className="text-white" strokeWidth={2.25} />
                   </div>
