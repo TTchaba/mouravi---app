@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- TBC Contractica შრიფტის ჩატვირთვა --- */
+@font-face {
+  font-family: 'TBCContractica';
+  src: url('./assets/fonts/TBCContractica-Light (2).ttf') format('truetype');
+  font-weight: 300; /* Light ვერსია */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TBCContractica';
+  src: url('./assets/fonts/TBCContractica-Book (2).ttf') format('truetype');
+  font-weight: 400; /* ჩვეულებრივი (Book) ვერსია */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TBCContractica';
+  src: url('./assets/fonts/TBCContractica-Black (1).ttf') format('truetype');
+  font-weight: 900; /* ყველაზე სქელი (Black/Bold) ვერსია */
+  font-style: normal;
+}
+
+:root {
+  /* აქაც ძველი Inter შევცვალე ახალი შრიფტით */
+  font-family: 'TBCContractica', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #111827;
+  background-color: #f9fafb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* ------------------------------------------------------------------ */
+/* Font-weight mapping utilities (numeric -> Tailwind class)         */
+/* Usage: add `fw-300` / `fw-400` etc. to elements when needed.      */
+/* ------------------------------------------------------------------ */
+.fw-300 { @apply font-light; }  /* აიღებს Light ვერსიას */
+.fw-400 { @apply font-normal; } /* აიღებს Book ვერსიას */
+.fw-500 { @apply font-medium; }
+.fw-600 { @apply font-semibold; }
+.fw-900 { @apply font-black; }  /* აიღებს სქელ Black ვერსიას */
+
+/* sensible defaults for the app */
+body { @apply font-normal; }
+
+/* სათაურებს ავტომატურად მივეცით `font-black` (900 წონა), 
+  რათა კოდში ხელით შეცვლის გარეშეც ყველა სათაური მაშინვე გამუქდეს!
+*/
+h1, h2, h3 { @apply font-black; }
+h1 { @apply text-2xl; }
