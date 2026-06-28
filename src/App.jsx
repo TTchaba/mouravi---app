@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import {
-  Tractor,
   Leaf,
   ChevronRight,
   ChevronLeft,
@@ -11,17 +10,13 @@ import {
   Sun,
   Waves,
   Sprout,
+  Clover,
   PiggyBank,
   Bird,
   Calculator,
   Milk,
   Coins,
   ArrowUpRight,
-  Fence,
-  Stethoscope,
-  Truck,
-  CalendarCheck,
-  ShoppingCart,
   CheckCircle2,
   RotateCcw,
   Flower2,
@@ -160,7 +155,7 @@ const CONDITION_FACTOR = {
 
 const ANIMAL_PROFILE = {
   "მსხვილფეხა რქოსანი/ხბო": {
-    icon: Cow,
+    icon: Beef,
     perHectare: 1.1,
     unit: "სული",
     yieldLabel: "სავარაუდო რძის გამოსავლიანობა",
@@ -178,7 +173,7 @@ const ANIMAL_PROFILE = {
     pricePerYieldUnit: 9.5,
   },
   "ცხვარი/თხა": {
-    icon: Sprout,
+    icon: Clover,
     perHectare: 6.5,
     unit: "სული",
     yieldLabel: "სავარაუდო ხორცის გამოსავლიანობა",
@@ -318,49 +313,37 @@ function MetricCard({ icon: Icon, label, value, unit, boosted, accent }) {
 
 const LIVESTOCK_ACTION_STEPS = [
   {
-    icon: Fence,
     title: "ნიადაგის გაუმჯობესება და შემოღობვა",
     desc: "დაიცავი საძოვარი არასწორი ექსპლუატაციისგან და გაზარდე მისი ხანგრძლივობა მართვადი შემოღობვით.",
     cta: "შეიძინე ელ. ღობე ფასდაკლებით",
-    ctaIcon: ShoppingCart,
   },
   {
-    icon: Stethoscope,
     title: "ვეტერინარის / აგრონომის კონსულტაცია",
     desc: "მიიღე პროფესიონალის შეფასება ფარის ჯანმრთელობაზე და საძოვრის ნიადაგის ხარისხზე.",
     cta: "დაჯავშნე ვიზიტი",
-    ctaIcon: CalendarCheck,
   },
   {
-    icon: Truck,
     title: "ტექნოლოგიური აღჭურვა",
     desc: "გაზარდე ეფექტურობა შესაბამისი ტექნიკით — სარწყავი სისტემები, საკალათე და სატრანსპორტო აღჭურვილობა.",
     cta: "ტექნიკის ლიზინგი",
-    ctaIcon: Tractor,
   },
 ];
 
 const ARABLE_ACTION_STEPS = [
   {
-    icon: Sprout,
     title: "აგრონომის კონსულტაცია",
     desc: "მიიღე პროფესიონალის შეფასება ნიადაგის ხარისხზე და კულტურის შესაბამისობის შესახებ.",
     cta: "დაჯავშნე ვიზიტი",
-    ctaIcon: CalendarCheck,
   },
   {
-    icon: Truck,
     title: "ტექნოლოგიური აღჭურვა",
     desc: "გააუმჯობესე მოსავლიანობა შესაბამისი მიწათმოქმედებითი ტექნიკით და სარწყავი სისტემით.",
     cta: "ტექნიკის ლიზინგი",
-    ctaIcon: Tractor,
   },
   {
-    icon: Flower2,
     title: "ფერმის კულტურების მართვა",
     desc: "შექმენი პერსონალური კალენდარი, განთავისუფლებული რეკომენდაციებით და მოსავალიანი სტრატეგიით.",
     cta: "გახსენი აგროგეგმა",
-    ctaIcon: Tractor,
   },
 ];
 
@@ -871,8 +854,6 @@ export default function App() {
                     </h3>
                     <div className="flex flex-col gap-3">
                       {activeActionSteps.map((s, i) => {
-                        const StepIcon = s.icon;
-                        const CtaIcon = s.ctaIcon;
                         return (
                           <div
                             key={s.title}
@@ -883,17 +864,16 @@ export default function App() {
                                 {i + 1}
                               </span>
                               <div className="flex-1">
-                                <div className="mb-1 flex items-center gap-1.5">
-                                  <StepIcon size={15} className="text-emerald-700" />
-                                  <p className="text-sm font-bold text-stone-800">
+                                <div className="mb-1">
+                                  <p className={"text-sm " + (path === "livestock" ? "font-semibold" : "font-bold") + " text-stone-800"}>
                                     {s.title}
                                   </p>
                                 </div>
                                 <p className="text-xs leading-relaxed text-stone-500">
                                   {s.desc}
                                 </p>
-                                <button className="mt-3 flex items-center gap-1.5 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
-                                  <CtaIcon size={14} /> {s.cta}
+                                <button className="mt-3 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                  {s.cta}
                                 </button>
                               </div>
                             </div>
@@ -1001,8 +981,6 @@ export default function App() {
                       </h3>
                       <div className="flex flex-col gap-3">
                         {activeActionSteps.map((s, i) => {
-                          const StepIcon = s.icon;
-                          const CtaIcon = s.ctaIcon;
                           return (
                             <div
                               key={s.title}
@@ -1013,8 +991,7 @@ export default function App() {
                                   {i + 1}
                                 </span>
                                 <div className="flex-1">
-                                  <div className="mb-1 flex items-center gap-1.5">
-                                    <StepIcon size={15} className="text-emerald-700" />
+                                  <div className="mb-1">
                                     <p className="text-sm font-bold text-stone-800">
                                       {s.title}
                                     </p>
@@ -1022,8 +999,8 @@ export default function App() {
                                   <p className="text-xs leading-relaxed text-stone-500">
                                     {s.desc}
                                   </p>
-                                  <button className="mt-3 flex items-center gap-1.5 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
-                                    <CtaIcon size={14} /> {s.cta}
+                                  <button className="mt-3 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                    {s.cta}
                                   </button>
                                 </div>
                               </div>
@@ -1048,109 +1025,6 @@ export default function App() {
     </div>
   );
 }
-
-
-// import React, { useState, useMemo } from "react";
-// import {
-//   Tractor,
-//   Leaf,
-//   ChevronRight,
-//   ChevronLeft,
-//   MapPin,
-//   Layers,
-//   Beef,
-//   Droplets,
-//   Sun,
-//   Waves,
-//   Sprout,
-//   PiggyBank,
-//   Bird,
-//   Calculator,
-//   Milk,
-//   Coins,
-//   ArrowUpRight,
-//   Fence,
-//   Stethoscope,
-//   Truck,
-//   CalendarCheck,
-//   ShoppingCart,
-//   CheckCircle2,
-//   RotateCcw,
-// } from "lucide-react";
-
-// /* ------------------------------------------------------------------ */
-// /*  Mock calculation engine                                            */
-// /* ------------------------------------------------------------------ */
-
-// const REGION_FACTOR = {
-//   "კახეთი": 1.08,
-//   "იმერეთი": 0.95,
-//   "შიდა ქართლი": 1.0,
-//   "სამეგრელო": 0.9,
-// };
-
-// const CONDITION_FACTOR = {
-//   "მშრალი": 0.7,
-//   "საშუალო": 1.0,
-//   "ჭარბტენიანი": 0.85,
-//   "ირიგირებული": 1.35,
-// };
-
-// const ANIMAL_PROFILE = {
-//   "მსხვილფეხა რქოსანი/ხბო": {
-//     icon: Beef,
-//     perHectare: 1.1,
-//     unit: "სული",
-//     yieldLabel: "სავარაუდო რძის გამოსავლიანობა",
-//     yieldUnit: "ლიტრი",
-//     yieldPerHead: 2000,
-//     pricePerYieldUnit: 0.9,
-//   },
-//   "ღორი": {
-//     icon: PiggyBank,
-//     perHectare: 2.4,
-//     unit: "სული",
-//     yieldLabel: "სავარაუდო ხორცის გამოსავლიანობა",
-//     yieldUnit: "კგ",
-//     yieldPerHead: 95,
-//     pricePerYieldUnit: 9.5,
-//   },
-//   "ცხვარი/თხა": {
-//     icon: Sprout,
-//     perHectare: 6.5,
-//     unit: "სული",
-//     yieldLabel: "სავარაუდო ხორცის გამოსავლიანობა",
-//     yieldUnit: "კგ",
-//     yieldPerHead: 22,
-//     pricePerYieldUnit: 11,
-//   },
-//   "ფრინველი": {
-//     icon: Bird,
-//     perHectare: 180,
-//     unit: "სული",
-//     yieldLabel: "სავარაუდო ხორცის გამოსავლიანობა",
-//     yieldUnit: "კგ",
-//     yieldPerHead: 2.1,
-//     pricePerYieldUnit: 7.2,
-//   },
-// };
-
-// function computeResults({ area, region, condition, animal }) {
-//   const a = Number(area) || 0;
-//   const profile = ANIMAL_PROFILE[animal];
-//   const regionF = REGION_FACTOR[region] ?? 1;
-//   const condF = CONDITION_FACTOR[condition] ?? 1;
-
-//   const capacity = Math.round(a * profile.perHectare * regionF * condF);
-//   const totalYield = Math.round(capacity * profile.yieldPerHead);
-//   const revenue = Math.round(totalYield * profile.pricePerYieldUnit);
-
-//   return { capacity, totalYield, revenue, profile };
-// }
-
-// function formatNum(n) {
-//   return new Intl.NumberFormat("ka-GE").format(Math.round(n));
-// }
 
 // /* ------------------------------------------------------------------ */
 // /*  Small UI atoms                                                     */
