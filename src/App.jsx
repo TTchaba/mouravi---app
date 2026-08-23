@@ -411,6 +411,10 @@ export default function App() {
     setStep("results");
   }
 
+  function toggleRotational() {
+    setRotational((isEnabled) => !isEnabled);
+  }
+
   const activeActionSteps = path === "arable" ? ARABLE_ACTION_STEPS : LIVESTOCK_ACTION_STEPS;
 
   function resetAll() {
@@ -523,7 +527,7 @@ export default function App() {
 
             <p className="mt-8 text-center text-[11px] text-stone-400">
               * მონაცემები საილუსტრაციოა - Mouravi-ს ჯერ არ აქვს ცოცხალი
-              ბაზა.
+              ბაზა
             </p>
           </div>
         )}
@@ -908,8 +912,10 @@ export default function App() {
                       </div>
                     </div>
                     <button
-                      onClick={() => setRotational((v) => !v)}
+                      type="button"
+                      onClick={toggleRotational}
                       aria-pressed={rotational}
+                      aria-label="როტაციული ძოვების ჩართვა ან გამორთვა"
                       className={[
                         "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300",
                         rotational ? "bg-emerald-600" : "bg-stone-300",
