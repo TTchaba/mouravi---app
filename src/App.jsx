@@ -917,14 +917,14 @@ export default function App() {
                       aria-pressed={rotational}
                       aria-label="როტაციული ძოვების ჩართვა ან გამორთვა"
                       className={[
-                        "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300",
+                        "relative h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors duration-300",
                         rotational ? "bg-emerald-600" : "bg-stone-300",
                       ].join(" ")}
                     >
                       <span
                         className={[
-                          "absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform duration-300",
-                          rotational ? "translate-x-[22px]" : "translate-x-0.5",
+                          "pointer-events-none absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all duration-300",
+                          rotational ? "right-0.5" : "left-0.5",
                         ].join(" ")}
                       />
                     </button>
