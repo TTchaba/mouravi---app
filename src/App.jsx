@@ -584,7 +584,7 @@ export default function App() {
             </div>
 
             <p className="mt-8 text-center text-[11px] text-stone-400">
-              * მონაცემები საილუსტრაციოა - Mouravi-ს ჯერ არ აქვს ცოცხალი
+              * მონაცემები საილუსტრაციოა, Mouravi-ს ჯერ არ აქვს ცოცხალი
               ბაზა
             </p>
           </div>
