@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Leaf,
   ChevronRight,
@@ -21,6 +21,19 @@ import {
   RotateCcw,
   Flower2,
 } from "lucide-react";
+import {
+  trackWebsiteOpen,
+  trackCalculatorStarted,
+  trackPathSelected,
+  trackCalculatorInputCompleted,
+  trackCalculationCompleted,
+  trackResultsViewed,
+  trackRotationalGrazingEnabled,
+  trackActionPlanOpened,
+  trackActionPlanCtaClicked,
+  trackBackClicked,
+  trackCalculatorReset,
+} from "./utils/analytics";
 
 /* ------------------------------------------------------------------ */
 /*  Local animal icons (the installed lucide build does not export Cow/Sheep) */
@@ -369,6 +382,11 @@ export default function App() {
   const [rotational, setRotational] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
 
+  // Track website open on mount
+  useEffect(() => {
+    trackWebsiteOpen();
+  }, []);
+
   const base = useMemo(() => {
     if (!results) return null;
     return results;
@@ -397,6 +415,22 @@ export default function App() {
     setRotational(false);
     setShowPlan(false);
     setStep("results");
+    
+    // Track analytics
+    trackCalculatorInputCompleted(path, {
+      region,
+      area: area || 10,
+      condition,
+      animal,
+    });
+    trackCalculationCompleted(path, {
+      region,
+      area: area || 10,
+      condition,
+      animal,
+      suitability: r.capacity,
+    });
+    trackResultsViewed(path, r);
   }
 
   function handleCalculateArable() {
@@ -409,15 +443,35 @@ export default function App() {
     });
     setArableResults(r);
     setStep("results");
+    
+    // Track analytics
+    trackCalculatorInputCompleted(path, {
+      region,
+      area: area || 10,
+      condition: irrigation ? 'ირიგირებული' : 'საშუალო',
+      crop,
+    });
+    trackCalculationCompleted(path, {
+      region,
+      area: area || 10,
+      crop,
+      suitability: r.suitability,
+    });
+    trackResultsViewed(path, r);
   }
 
   function toggleRotational() {
-    setRotational((isEnabled) => !isEnabled);
+    const newValue = !rotational;
+    setRotational(newValue);
+    trackRotationalGrazingEnabled(newValue);
   }
 
   const activeActionSteps = path === "arable" ? ARABLE_ACTION_STEPS : LIVESTOCK_ACTION_STEPS;
 
   function resetAll() {
+    if (step !== "onboarding") {
+      trackCalculatorReset();
+    }
     setStep("onboarding");
     setPath(null);
     setResults(null);
@@ -470,6 +524,8 @@ export default function App() {
             <div className="flex flex-1 flex-col gap-4">
               <button
                 onClick={() => {
+                  trackCalculatorStarted("livestock");
+                  trackPathSelected("livestock");
                   setPath("livestock");
                   setStep("form");
                 }}
@@ -498,6 +554,8 @@ export default function App() {
 
               <button
                 onClick={() => {
+                  trackCalculatorStarted("arable");
+                  trackPathSelected("arable");
                   setPath("arable");
                   setStep("form");
                 }}
@@ -536,7 +594,10 @@ export default function App() {
         {step === "form" && path === "livestock" && (
           <div className="flex flex-1 flex-col">
             <button
-              onClick={() => setStep("onboarding")}
+              onClick={() => {
+                trackBackClicked("form", "onboarding");
+                setStep("onboarding");
+              }}
               className="mb-4 flex w-fit items-center gap-1 text-xs font-medium text-stone-500 hover:text-stone-700"
             >
               <ChevronLeft size={14} /> უკან
@@ -663,7 +724,10 @@ export default function App() {
 {step === "form" && path === "arable" && (
   <div className="flex flex-1 flex-col">
     <button
-      onClick={() => setStep("onboarding")}
+      onClick={() => {
+        trackBackClicked("form", "onboarding");
+        setStep("onboarding");
+      }}
       className="mb-4 flex w-fit items-center gap-1 text-xs font-medium text-stone-500 hover:text-stone-700"
     >
       <ChevronLeft size={14} /> უკან
@@ -791,6 +855,7 @@ export default function App() {
           <div className="flex flex-1 flex-col">
             <button
               onClick={() => {
+                trackBackClicked("results", "form");
                 setStep("form");
                 setShowPlan(false);
               }}
@@ -844,6 +909,7 @@ export default function App() {
 
                 {showPlan && (
                   <div className="mt-6">
+                    {trackActionPlanOpened(path)}
                     <h3 className="mb-3 text-base font-bold text-stone-800">
                       სამოქმედო გეგმა
                     </h3>
@@ -867,7 +933,10 @@ export default function App() {
                                 <p className="text-xs leading-relaxed text-stone-500">
                                   {s.desc}
                                 </p>
-                                <button className="mt-3 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                <button
+                                  onClick={() => trackActionPlanCtaClicked(s.cta)}
+                                  className="mt-3 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700"
+                                >
                                   {s.cta}
                                 </button>
                               </div>
@@ -973,6 +1042,7 @@ export default function App() {
                   {/* Action plan */}
                   {showPlan && (
                     <div className="mt-6">
+                      {trackActionPlanOpened(path)}
                       <h3 className="mb-3 text-base font-bold text-stone-800">
                         სამოქმედო გეგმა
                       </h3>
@@ -996,7 +1066,10 @@ export default function App() {
                                   <p className="text-xs leading-relaxed text-stone-500">
                                     {s.desc}
                                   </p>
-                                  <button className="mt-3 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                  <button
+                                    onClick={() => trackActionPlanCtaClicked(s.cta)}
+                                    className="mt-3 rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700"
+                                  >
                                     {s.cta}
                                   </button>
                                 </div>
